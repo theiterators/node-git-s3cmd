@@ -51,7 +51,7 @@ RUN addgroup -g 1000 node \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.gz" SHASUMS256.txt.asc SHASUMS256.txt
 
-ENV YARN_VERSION 1.15.2
+ENV YARN_VERSION 1.16.0
 
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
@@ -73,8 +73,9 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 
 ENV S3CMD_VERSION 2.0.1
 
-RUN curl -sfSL https://sourceforge.net/projects/s3tools/files/s3cmd/${S3CMD_VERSION}/s3cmd-${S3CMD_VERSION}.tar.gz | tar vxz && \
-    mv s3cmd-${S3CMD_VERSION}/S3 /usr/local/bin && mv s3cmd-${S3CMD_VERSION}/s3cmd /usr/local/bin && \
-    apk del curl tar gzip make gcc g++ python linux-headers binutils-gold gnupg && \
-    rm -Rf /tmp/* /var/cache/apk/* /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts && \
-    { rm -rf /root/.gnupg || true; }
+RUN apk add --no-cache --virtual .build-deps-yarn curl tar gzip \
+    && curl -sfSL https://sourceforge.net/projects/s3tools/files/s3cmd/${S3CMD_VERSION}/s3cmd-${S3CMD_VERSION}.tar.gz | tar vxz \
+    && mv s3cmd-${S3CMD_VERSION}/S3 /usr/local/bin && mv s3cmd-${S3CMD_VERSION}/s3cmd /usr/local/bin \
+    && rm -Rf /tmp/* /var/cache/apk/* /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts \
+    && { rm -rf /root/.gnupg || true; } \
+    && apk del .build-deps-yarn
