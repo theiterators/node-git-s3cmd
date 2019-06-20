@@ -15,7 +15,7 @@ RUN addgroup -g 1000 node \
         libgcc \
         linux-headers \
         make \
-        python \
+        python2 \
         tar \
         gzip \
         git \
@@ -73,9 +73,11 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 
 ENV S3CMD_VERSION 2.0.1
 
-RUN apk add --no-cache --virtual .build-deps-yarn curl tar gzip \
+RUN apk add --no-cache --virtual .build-deps-s3cmd curl tar gzip \
     && curl -sfSL https://sourceforge.net/projects/s3tools/files/s3cmd/${S3CMD_VERSION}/s3cmd-${S3CMD_VERSION}.tar.gz | tar vxz \
     && mv s3cmd-${S3CMD_VERSION}/S3 /usr/local/bin && mv s3cmd-${S3CMD_VERSION}/s3cmd /usr/local/bin \
     && rm -Rf /tmp/* /var/cache/apk/* /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts \
     && { rm -rf /root/.gnupg || true; } \
-    && apk del .build-deps-yarn
+    && apk del .build-deps-s3cmd
+
+RUN apk add python2 py2-dateutil
