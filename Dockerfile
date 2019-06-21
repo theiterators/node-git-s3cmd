@@ -78,3 +78,7 @@ RUN apk add --no-cache --virtual .build-deps-s3cmd curl tar gzip \
     && rm -Rf /tmp/* /var/cache/apk/* /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts \
     && { rm -rf /root/.gnupg || true; } \
     && apk del .build-deps-s3cmd
+
+RUN apk add bash
+
+CMD bash
