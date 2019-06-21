@@ -2,6 +2,8 @@ FROM alpine:3.9.4
 
 ENV NODE_VERSION 11.15.0
 
+RUN apk add python2 py2-dateutil git
+
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
@@ -15,11 +17,8 @@ RUN addgroup -g 1000 node \
         libgcc \
         linux-headers \
         make \
-        python2 \
         tar \
         gzip \
-        git \
-        py-dateutil \ 
   && for key in \
     94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
     FD3A5288F042B6850C66B31F09FE44734EB7990E \
@@ -79,5 +78,3 @@ RUN apk add --no-cache --virtual .build-deps-s3cmd curl tar gzip \
     && rm -Rf /tmp/* /var/cache/apk/* /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts \
     && { rm -rf /root/.gnupg || true; } \
     && apk del .build-deps-s3cmd
-
-RUN apk add python2 py2-dateutil
